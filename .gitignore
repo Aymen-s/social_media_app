@@ -1,0 +1,49 @@
+# Node.js dependencies (backend & frontend)
+**/node_modules/
+**/dist/
+**/build/
+
+# Environment variables (sensitive information)
+**/.env
+**/.env.local
+**/.env.development
+**/.env.production
+**/.env.test
+
+# Logs
+**/logs
+**/*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# VSCode settings (optional)
+.vscode/
+
+# npm package lock files
+**/package-lock.json
+**/yarn.lock
+**/pnpm-lock.yaml
+
+# Backend specific (if using uploads, temp, etc.)
+backend/uploads/
+backend/tmp/
+backend/.DS_Store
+
+# Frontend specific (if using public uploads or temp folders)
+frontend/public/uploads/
+frontend/.DS_Store
+
+# MongoDB data (if present locally)
+data/
+dump/
+
+# Miscellaneous
+*.pem
+*.key
+*.crt
+*.cert
