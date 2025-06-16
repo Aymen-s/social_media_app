@@ -7,6 +7,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const cors = require("cors");
 const path = require("path");
+const userRouter = require("./routes/userRoutes");
 
 const AppError = require("./config/appError");
 
@@ -52,14 +53,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes (to be implemented)
-app.get("/", (req, res) => {
-  res.status(200).json({ status: "success", message: "Server is running" });
-});
-// TODO: Implement auth routes (/api/v1/auth for register, login)
-// TODO: Implement post routes (/api/v1/posts for create, get, like, comment)
-// TODO: Implement user routes (/api/v1/users for follow, unfollow)
-// TODO: Implement message routes (/api/v1/messages for chat history)
+// Routes
+app.use("/api/v1/users", userRouter);
 
 // Handle undefined routes
 app.all("*", (req, res, next) => {
