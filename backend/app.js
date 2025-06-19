@@ -8,6 +8,7 @@ const hpp = require("hpp");
 const cors = require("cors");
 const path = require("path");
 const userRouter = require("./routes/userRoutes");
+const postRouter = require("./routes/postRoutes");
 
 const AppError = require("./config/appError");
 
@@ -55,6 +56,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/posts", postRouter);
 
 // Handle undefined routes
 app.all("*", (req, res, next) => {
