@@ -60,6 +60,80 @@ exports.createUser = (req, res) => {
   });
 };
 
+exports.followUser = catchAsync(async (req, res, next) => {
+  const userIdToFollow = req.params.userId;
+  const currentUserId = req.user._id;
+
+  // Prevent following self
+  if (userIdToFollow === currentUserId.toString()) {
+    return next(new AppError("You cannot follow yourself", 400));
+  }
+
+  // Find both users
+  const userToFollow = await User.findById(userIdToFollow);
+  const currentUser = await User.findById(currentUserId);
+
+  if (!userToFollow) {
+    return next(new AppError("User to follow not found", 404));
+  }
+
+  // Check if already following
+  if (currentUser.following.includes(userIdToFollow)) {
+    return next(new AppError("You are already following this user", 400));
+  }
+
+  // Update both users
+  currentUser.following.push(userIdToFollow);
+  userToFollow.followers.push(currentUserId);
+
+  await currentUser.save({ validateBeforeSave: false });
+  await userToFollow.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    status: "success",
+    message: `You are now following ${userToFollow.name}`,
+  });
+});
+
+exports.unfollowUser = catchAsync(async (req, res, next) => {
+  const userIdToUnfollow = req.params.userId;
+  const currentUserId = req.user._id;
+
+  // Prevent unfollowing self
+  if (userIdToUnfollow === currentUserId.toString()) {
+    return next(new AppError("You cannot unfollow yourself", 400));
+  }
+
+  // Find both users
+  const userToUnfollow = await User.findById(userIdToUnfollow);
+  const currentUser = await User.findById(currentUserId);
+
+  if (!userToUnfollow) {
+    return next(new AppError("User to unfollow not found", 404));
+  }
+
+  // Check if not following
+  if (!currentUser.following.includes(userIdToUnfollow)) {
+    return next(new AppError("You are not following this user", 400));
+  }
+
+  // Update both users
+  currentUser.following = currentUser.following.filter(
+    (id) => id.toString() !== userIdToUnfollow
+  );
+  userToUnfollow.followers = userToUnfollow.followers.filter(
+    (id) => id.toString() !== currentUserId
+  );
+
+  await currentUser.save({ validateBeforeSave: false });
+  await userToUnfollow.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    status: "success",
+    message: `You have unfollowed ${userToUnfollow.name}`,
+  });
+});
+
 exports.getAllUsers = getAll(User);
 exports.getUser = getOne(User, "followers following");
 exports.updateUser = updateOne(User);

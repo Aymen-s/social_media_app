@@ -1,57 +1,58 @@
 ✅ TODO: MERN Stack Social Media App Roadmap
-This checklist tracks tasks for building a MERN stack social media app with user authentication, posts, likes, comments, profiles, follow/unfollow, and real-time chat. Uses Redux Toolkit, Shadcn/ui, Socket.IO, and Postman for testing.
-Start Date: June 14, 2025Target Finish Date: \_\_\_\_ (Aim for 3-5 weeks, ~60-80 hours)
+This checklist tracks tasks for building a MERN stack social media app with user authentication, posts, likes, comments, follows, and real-time chat. Uses Redux Toolkit, Shadcn/ui, UI components, Socket.IO, and testing with Postman.
+Start Date: June 15, 2025Target Finish Date: \_\_\_\_ (Aim for 3-5 weeks, ~60-80 hours)
 📁 Phase 1: Project Initialization
 
-Create root project directory: Social_Media_App
+Create root project directory: Social_MediaApp
 Initialize Git repository and create GitHub repo
 Create .gitignore for backend and frontend
 Create backend and frontend folders
 Write README.md with project goals, stack, and setup instructions
 Sketch wireframes for homepage, profile, and chat UI
-Review Redux Toolkit docs for slices and thunks
+Review Redux Toolkit docs for state management
 Install tools: Node.js, npm, MongoDB Atlas, VS Code, Postman, Socket.IO CLI (npm install -g socket.io)
 
 🧠 Phase 2: Backend Setup (backend/)
 🔧 Setup & Config
 
 Run npm init -y in backend
-Install dependencies: npm install express@4.19.2 mongoose dotenv cors socket.io morgan helmet express-rate-limit express-mongo-sanitize xss-clean hpp bcryptjs jsonwebtoken validator
-Install dev tool: npm install --save-dev nodemon
+Install dependencies: npm install express@4.17.1 dotenv cors socket.io morgan helmet express-rate-limit express-mongo-sanitize xss-clean hpp bcryptjs jsonwebtoken validator
+Install dev dependency: npm install --save-dev nodemon
 Create .env with MONGO_URI, PORT, JWT_SECRET
 Create folder structure: config/, models/, routes/, controllers/, middleware/
-Create server.js with Express server and Socket.IO
+Create server.js with Express server and Socket.IO integration
 Create app.js with middleware, test route, and user routes
-Update package.json with start script for nodemon server.js
+Update package.json with start script: nodemon server.js
 Debug and test server with Postman (GET http://localhost:5000)
-Create controllers/handlerFactory.js for reusable CRUD handlers
-Create controllers/userController.js for user-related operations
-Implement controllers/authController.js (signup, login, protect, password management)
-Create routes/userRoutes.js for auth and user routes
+Create controllers/handlerFactory.js for reusable CRUD operations
+Create controllers/userController.js for user-related logic
+Implement controllers/authController.js (signup, login, protect routes, password management)
+Create routes/userRoutes.js for auth and user profile endpoints
+Save Postman collection in docs/Social_Media_API.postman_collection.json
 
 👤 Authentication System
 
 Create models/User.js (fields: name, email, password, profilePicture, followers, following)
-Create middleware/authMiddleware.js for protected routes
-Test auth endpoints with Postman
+Implement protect middleware in authController.js for protected routes
+Test auth endpoints with Postman (signup, login, forgot password, reset password)
 
 📝 Posts & Social Logic
 
-Create models/Post.js (fields: user, content, likes, comments, timestamp)
-Create routes/posts.js for CRUD (/api/v1/posts/create, /api/v1/posts/get, /api/v1/posts/update, /api/v1/posts/delete)
-Implement controllers/postController.js
+Create models/Post.js (fields: user, content, image, likes, comments, timestamp)
+Create routes/posts.js for CRUD operations (/api/v1/posts/create, /get, /update, /delete)
+Implement controllers/postController.js (with image URL support)
 Add endpoints: /api/v1/posts/:postId/like, /api/v1/posts/:postId/comment
 Create routes/users.js for /api/v1/users/:userId/follow, /api/v1/users/:userId/unfollow
-Implement controllers/userController.js
-Test with Postman
+Implement follow/unfollow in userController.js
+Test posts and social actions with Postman
 
 💬 Real-Time Chat
 
-Create models/Message.js (fields: sender, recipient, content, timestamp)
-Create routes/messages.js for chat history
-Implement controllers/messageController.js
-Implement Socket.IO events in server.js (e.g., joinRoom, sendMessage)
-Test with Postman and Socket.IO client
+Create models/Message.js (fields: sender, recipient, content, image, timestamp)
+Create routes/messages.js for chat endpoints
+Implement controllers/messageController.js with pagination and image support
+Implement Socket.IO events in server.js (joinRoom, newMessage)
+Test chat endpoints with Postman and Socket.IO client (in progress)
 
 🎨 Phase 3: Frontend Setup (frontend/)
 
@@ -60,69 +61,68 @@ Install dependencies: npm install axios react-router-dom @reduxjs/toolkit react-
 Install Shadcn/ui: npx shadcn-ui@latest init
 Set up Tailwind CSS
 Configure proxy in package.json to http://localhost:5000
-Create folder structure: src/assets/, src/components/, src/redux/, src/utils/
+Create folder structure: src/assets/, src/components/, src/pages/, src/utils/, src/features/
 
 🗃️ Redux Toolkit Setup
 
-Create src/redux/store.js
+Create src/features/store.js
 Create slices: authSlice.js, postSlice.js, userSlice.js, chatSlice.js
-Set up thunks for API calls in each slice
+Implement thunks for async API calls
 
-👤 Auth UI
+🌐 Auth UI
 
-Create components/Login.js and components/Register.js with Shadcn/ui forms
-Use Redux thunks for /api/v1/auth/register and /api/v1/auth/login
+Create pages/Login.js and pages/Register.js with Shadcn/ui components
+Implement auth thunks for /api/v1/users/signup, /login
 Store JWT in localStorage and Redux
-Create components/PrivateRoute.js for protected routes
+Create components/ProtectedRoute.js for authenticated routes
 Test auth flow in browser
 
-📝 Post Functionality
+📸 Post Functionality
 
-Create components/CreatePost.js with Shadcn/ui form
+Create components/PostForm.js for creating posts
 Create components/PostFeed.js to display posts
-Add like/comment buttons in components/CommentSection.js
-Create components/Profile.js for user details and posts
-Add follow/unfollow buttons with Redux thunks
+Create components/CommentSection.js for likes/comments
+Create pages/Profile.js for user profiles and posts
+Implement post-thunks for CRUD and social actions
 Test post features in browser
 
-💬 Real-Time Chat
+💬 Real-Time Chat UI
 
-Create components/Chat.js with Shadcn/ui for message display/input
-Connect to Socket.IO server (handle sendMessage, receiveMessage)
-Use Redux thunks for chat history
+Create pages/Chat.js for messaging interface
+Connect to Socket.IO for real-time messaging
+Implement chat history loading with pagination
 Store chat state in chatSlice.js
-Test chat in browser
+Test chat UI in browser
 
 🧪 Phase 4: Testing & Polish
 
 Test all API endpoints with Postman (auth, posts, users, messages)
-Save Postman collection in docs/postman_collection.json
-Test edge cases: duplicate emails, invalid inputs, unauthorized access
-Add error handling with Shadcn/ui alerts
+Test edge cases: invalid inputs, unauthorized access, duplicate emails
+Implement frontend error handling with Shadcn/ui alerts
 Add Shadcn/ui toasts for success messages
-Ensure mobile responsiveness with Tailwind
+Ensure mobile responsiveness with Tailwind CSS
 Update README.md with API docs and setup guide
 
 🚀 Phase 5: Deployment
 
-Set NODE_ENV=production in backend .env
+Set NODE_ENV=production in .env
 Build frontend: npm run build
 Serve frontend from backend with express.static
-Deploy backend to Render/Railway
-Deploy frontend to Vercel or via backend
+Deploy backend to Render/Heroku
+Deploy frontend to Vercel/Netlify or via backend
 Configure MongoDB Atlas for production
 Test deployed app, including real-time chat
 
 🛠️ Phase 6: Maintenance
 
 Monitor app logs on hosting platform
-Schedule weekly checks for updates
-Monitor MongoDB and Socket.IO usage
+Schedule weekly dependency updates
+Monitor MongoDB and Socket.IO performance
 Collect user feedback for future features
 
 📦 Optional Enhancements
 
-Add profile picture upload with Cloudinary
+Add Cloudinary for image uploads
 Implement real-time notifications
 Add infinite scroll for post feed
 Support dark/light mode toggle
@@ -131,7 +131,7 @@ Add PWA support
 
 Notes:
 
-Check tasks in VS Code with [x] or by clicking checkboxes.
-Commit to GitHub after each step with clear messages.
-Use Postman for API testing and browser dev tools for frontend.
-Refer to README.md for setup and API details.
+Check tasks in VS Code with [x] or checkboxes.
+Commit to GitHub after each major step with clear messages.
+Use Postman for API testing; browser dev tools for frontend.
+Refer to README.md for setup and API details (once written).

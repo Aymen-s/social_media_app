@@ -8,6 +8,8 @@ const {
   updateMe,
   deleteMe,
   getMe,
+  followUser,
+  unfollowUser,
 } = require("../controllers/userController");
 const {
   signup,
@@ -28,6 +30,10 @@ router.patch("/resetPassword/:token", resetPassword);
 
 // Protect all routes after this middleware
 router.use(protect);
+
+// Follow/Unfollow Routes
+router.post("/:userId/follow", followUser);
+router.post("/:userId/unfollow", unfollowUser);
 
 router.patch("/updateMyPassword", updatePassword);
 router.get("/me", getMe, getUser);

@@ -26,7 +26,7 @@ mongoose
     process.exit(1);
   });
 
-// Set up HTTP server and Socket.IO (for future real-time chat)
+// Set up HTTP server and Socket.IO
 const port = process.env.PORT || 5000;
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -36,12 +36,32 @@ const io = new Server(server, {
   },
 });
 
-// Placeholder for Socket.IO chat logic (to be implemented)
+// Store Socket.IO instance in app
+app.set("socketio", io);
+
+// Socket.IO connection handling
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
-  // TODO: Implement Socket.IO events for real-time chat (e.g., joinRoom, sendMessage)
+
+  // Join user-specific room
+  socket.on("joinRoom", (userId) => {
+    if (!userId) {
+      socket.emit("error", "User ID is required to join room");
+      return;
+    }
+    socket.join(`user:${userId}`);
+    console.log(`User ${userId} joined room user:${userId}`);
+    socket.emit("roomJoined", `user:${userId}`);
+  });
+
+  // Handle disconnection
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);
+  });
+
+  // Error handling
+  socket.on("error", (err) => {
+    console.error("Socket.IO error:", err);
   });
 });
 
